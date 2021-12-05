@@ -1,6 +1,19 @@
 import React from "react";
 import "./Table.css";
+import { useEffect, useState } from "react";
 const Table = () => {
+  const [initalState, setInitialState] = useState([]);
+  useEffect(() => {
+    fetch("/allUsers")
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonResponse) => console.log(jsonResponse));
+  }, []);
+  console.log(initalState);
+
   return (
     <>
       <h1>Showing Contents</h1>
