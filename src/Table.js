@@ -1,18 +1,34 @@
 import React from "react";
 import "./Table.css";
 import { useEffect, useState } from "react";
+import axios from "axios";
+
 const Table = () => {
+  const url = "http://localhost:5000/allUsers";
   const [initalState, setInitialState] = useState([]);
+  let content = null;
   useEffect(() => {
-    fetch("/allUsers")
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((jsonResponse) => console.log(jsonResponse));
-  }, []);
-  console.log(initalState);
+    axios.get(url).then((res) => {
+      setInitialState(res.data);
+      console.log(res.data);
+    });
+  }, [url]);
+
+  if (initalState) {
+    content = (
+      <tr>
+        <td>{initalState.data[0].username}</td>
+        <td>{initalState.data[0].email}</td>
+        <td>{initalState.data[1].username}</td>
+        <td>{initalState.data[2].username}</td>
+        <td>certificate</td>
+        <td>paydate</td>
+        <td>no of videos</td>
+        <td>updateddate</td>
+        <td>activeorinactive</td>
+      </tr>
+    );
+  }
 
   return (
     <>
@@ -29,16 +45,7 @@ const Table = () => {
           <th>Latest Updated Date</th>
           <th>Active or inactive</th>
         </tr>
-        <tr>
-          <td>name</td>
-          <td>email</td>
-          <td>pathname</td>
-          <td>certificate</td>
-          <td>paydate</td>
-          <td>no of videos</td>
-          <td>updateddate</td>
-          <td>activeorinactive</td>
-        </tr>
+        {content}
       </table>
 
       <button
